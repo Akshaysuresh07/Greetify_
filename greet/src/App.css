@@ -1,0 +1,7 @@
+/* styles.css */
+.custom-editor .ql-editor {
+    background-color: red; /* Set your desired background color */
+    color: #333; /* Optional: Set text color for better contrast */
+    padding: 20px; /* Optional: Add padding for better spacing */
+    min-height: 300px; /* Ensure the editor has a minimum height */
+  }
