@@ -45,6 +45,13 @@ const Email = () => {
       }
     });
   };
+    // Sample CSV content
+    const sampleCsvContent = `email,name
+    example1@example.com,Test1`;
+    
+      // Create a Blob URL for the sample CSV
+      const sampleCsvBlob = new Blob([sampleCsvContent], { type: 'text/csv' });
+      const sampleCsvUrl = URL.createObjectURL(sampleCsvBlob);
 //send email
   const handleSubmit = async () => {
     
@@ -114,7 +121,13 @@ const Email = () => {
             onChange={handleFileUpload}
             className="w-full p-2 mt-2 border border-gray-300 rounded"
           />
-                    <label className="block text-violet-500">Upload CSV:</label>
+                    <a
+              href={sampleCsvUrl}
+              download="sample.csv"
+              className="text-blue-500 hover:underline mt-2 inline-block"
+            >
+              Download Sample CSV
+            </a>
 
         </div>
           <div className="mb-4">
