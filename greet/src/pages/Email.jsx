@@ -75,7 +75,8 @@ const Email = () => {
 
   return (
     <>
-     <Header/>
+     {/* <Header/> */}
+     {/* <Sidebar/> */}
     <div className=" flex w-full min-h-screen bg-slate-100 ">
      
 
