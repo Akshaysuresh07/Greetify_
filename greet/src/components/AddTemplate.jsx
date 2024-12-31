@@ -1,85 +1,165 @@
 import React, { useState } from 'react';
-import { createTemplate } from '../Api/templateApi';
+import { createTemplate } from '../Api/templateApi'; 
 
-const AddTemplate = ({ onClose, onTemplateAdded }) => {
+const AddTemplate = ({ onTemplateAdded, onClose }) => {
   const [templateData, setTemplateData] = useState({
     name: '',
-    // subject: '',
-    content: '',
+    content: `<!DOCTYPE html>
+    <html>
+    <head>
+        <title>Warm Wishes for a Joyous Holiday Season</title>
+    </head>
+    <body>
+    <br/>
+    <br/>
+    
+    <!-- Outer container -->
+    <div style="min-width:390px; max-width:650px; width:80%; margin:10px auto; border:solid thin gray; font-family:Arial; font-size:13pt; background:url({imgUrl}) no-repeat; background-size:contain;">
+    
+    <!-- Header -->
+    <div style="padding-bottom:35px;">
+        <img style="width:200px; margin:40px 0 0 20px;" src="https://ictkerala.org/uploads/2024/05/LOGO_ICTAK-ENG-Black-Text.png" alt="Logo - ICT Academy of Kerala" title="ICT Academy of Kerala"/>
+    </div>
+    <!-- Header End -->
+    
+    <!-- Main Body -->
+    <div id="mainBody">
+    </div>
+    
+    <!-- Footer -->
+    <div style="width:300px; margin: 25px auto; font-family:Arial; text-align:center; text-transform:uppercase; font-size:65%; color:gray;">
+        <span style="font-size:125%; font-weight:bold; color:#0099CC">ICT Academy of Kerala</span><br/>G1, Thejaswini, Technopark Campus<br/>Thiruvananthapuram, Kerala, India - 695581
+    </div>
+    <!-- Footer End -->
+    
+    <br/>
+    <br/>
+    </body>
+    </html>`,
     image: ''
   });
-
+  const [preview, setPreview] = useState('');
+  const [mainBodyContent, setMainBodyContent] = useState('');
+  console.log('mainbody----', mainBodyContent);
+  
   const handleChange = (e) => {
     const { name, value } = e.target;
     setTemplateData({ ...templateData, [name]: value });
   };
 
-  const handleSubmit = async (e) => {
+  const handleMainBodyChange = (e) => {
+    setMainBodyContent(e.target.value);
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreview(reader.result); // Show preview
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+  const handleUpload = async (e) => {
     e.preventDefault();
+  
+    const fileInput = document.getElementById('fileInput');
+    const file = fileInput.files[0];
+  
+    if (!file) {
+      alert('Please select an image first.');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('image', file);
+  
     try {
-      const newTemplate = await createTemplate(templateData);
-      console.log('New template:', newTemplate);
-      if(newTemplate.code==201){
-        alert("Template Created Successfully");
-        onTemplateAdded(newTemplate);
-        onClose();
-        
-      }
+      const response = await fetch('/api/upload-image', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      const result = await response.json();
+      
+    if (result.data && result.data.filename) {
+      // Set uploaded image as background image
+      const imgUrl = ` https://greetify-ryxz.onrender.com/api/uploads/${result.data.filename}`;
+      setTemplateData((prev) => ({
+        ...prev,
+        content: prev.content.replace('{imgUrl}', imgUrl),
+      }));
+      alert('Image uploaded successfully!');
+    } else {
+      alert('Image upload failed.');
+    }
 
-    
+
     } catch (error) {
-      console.error('Error creating template:', error);
+      console.error('Upload error:', error);
+      alert('Error uploading image.');
     }
   };
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const updatedContent = templateData.content.replace(
+      '<div id="mainBody">',
+      `<div id="mainBody">${mainBodyContent}`
+    );
+    try {
+      const newTemplate = await createTemplate({ ...templateData, content: updatedContent });
+      console.log('New template:', newTemplate);
+      if (newTemplate.code === 201) {
+        alert('Template Created Successfully');
+        onTemplateAdded(newTemplate);
+        onClose();
+      }
+    } catch (error) {
+      console.error('Error creating template:', error.response ? error.response.data : error.message);
+      alert('Error creating template:', error.response ? error.response.data : error.message);
+    }
+  };
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-11/12 md:w-2/3 lg:w-1/2 xl:w-1/3 max-h-full overflow-y-auto">
-        <h2 className="text-2xl font-bold mb-4">Add New Template</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
-              Template Name
-            </label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={templateData.name}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              required
-            />
-          </div>
-          {/* <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="subject">
-             Upload Image
-            </label>
-            <input
-              type="text"
-              name="image"
-              id="image"
-              value={templateData.image}
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              
-            /> */}
-          {/* </div> */}
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="content">
-              Content
-            </label>
-            <textarea
-              name="content"
-              id="content"
-              value={templateData.content}
-              onChange={handleChange}
-              rows="6"
-              className="w-full p-2 border border-gray-300 rounded resize-none"
-              required
-            ></textarea>
-          </div>
-          <div className="flex justify-between">
+      <h2>Add New Template</h2>
+      <form onSubmit={handleSubmit}>
+        <div className="mb-4">
+          <input
+            type="text"
+            name="name"
+            value={templateData.name}
+            onChange={handleChange}
+            placeholder="name"
+            className="w-full p-2 mt-2 border border-gray-300 rounded"
+          />
+        </div>
+        <div className="mb-4 flex flex-row justify-between">
+          <input
+            type="file"
+            id="fileInput"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+          <button onClick={handleUpload} className="bg-blue-500  px-2 py-1 w-2/4 text-white rounded mt-2">
+            Upload 
+          </button>
+        </div>
+        <div className="mb-4">
+        <textarea
+            name="mainBodyContent"
+            value={mainBodyContent}
+            onChange={handleMainBodyChange}
+            placeholder="Enter main body content here..."
+            className="w-full p-2 mt-2 border border-gray-300 rounded"
+            rows="10"
+          />
+        </div>
+    
+        {preview && <img src={preview} alt="Preview" style={{ width: '200px', marginTop: '10px' }} />}
+        <div className="flex justify-between mt-5">
             <button
               type="button"
               onClick={onClose}
@@ -94,8 +174,8 @@ const AddTemplate = ({ onClose, onTemplateAdded }) => {
               Add Template
             </button>
           </div>
-        </form>
-      </div>
+      </form>
+    </div>
     </div>
   );
 };
