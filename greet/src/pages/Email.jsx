@@ -50,7 +50,7 @@ const Email = () => {
     
     try {
       // POST request with body data
-      const response = await axios.post('http://localhost:4000/api/sendemails', formData, {
+      const response = await axios.post('/api/sendemails', formData, {
           headers: {
               'Content-Type': 'application/json', 
           },
