@@ -1,5 +1,5 @@
 import React from 'react';
-import image9 from '../assets/image 8.png'
+// import image9 from '../assets/image 8.png'
 
 const Cards = ({ templates,onView }) => {
   console.log(templates);
