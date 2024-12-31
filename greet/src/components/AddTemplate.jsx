@@ -5,37 +5,118 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
   const [templateData, setTemplateData] = useState({
     name: '',
     content: `<!DOCTYPE html>
-    <html>
-    <head>
-        <title>Warm Wishes for a Joyous Holiday Season</title>
-    </head>
-    <body>
-    <br/>
-    <br/>
+<html>
+<head>
+    <title>Warm Wishes for a Joyous Holiday Season</title>
+</head>
+<style>
+    @media screen and (max-width: 600px) {
+        .mainBody {
+            font-size: 11pt;
+            padding: 10px;
+            margin-top: 300px;
+        }
+    }
+    </style>
+<body>
+<br/>
+<br/>
+
+<!-- Outer container -->
+<div style="min-width:390px; max-width:650px; width:80%; margin:10px auto; border:solid thin gray; font-family:Arial; font-size:13pt; background:url({imgUrl}) no-repeat; background-size:contain;">
+
+<!-- Header -->
+<div style="padding-bottom:35px;">
     
-    <!-- Outer container -->
-    <div style="min-width:390px; max-width:650px; width:80%; margin:10px auto; border:solid thin gray; font-family:Arial; font-size:13pt; background:url({imgUrl}) no-repeat; background-size:contain;">
+    <img style="width:200px; margin:40px 0 0 20px;" src="https://ictkerala.org/uploads/2024/05/LOGO_ICTAK-ENG-Black-Text.png" alt="Logo - ICT Academy of Kerala" title="ICT Academy of Kerala"/>
+</div>
+<!-- Header End -->
+
     
-    <!-- Header -->
-    <div style="padding-bottom:35px;">
-        <img style="width:200px; margin:40px 0 0 20px;" src="https://ictkerala.org/uploads/2024/05/LOGO_ICTAK-ENG-Black-Text.png" alt="Logo - ICT Academy of Kerala" title="ICT Academy of Kerala"/>
+<!-- Slider Start-->
+<div style="display:none;">
+  <img style="width:100%;" src="https://drive.google.com/uc?id=1LHiuSlgh3QPiYYhSj-pw_JBmNvCpgeP5"/>
+</div>
+ <!-- Slider End -->
+
+<!-- Inner Container -->
+<div style="">
+
+<!-- Main Body -->
+<div style="margin-top:800px; min-width:350px; padding:0 20px; font-size:13pt; ">
+    <p>
+        Dear Well-wisher,<br/>
+        As the holiday season approaches, we want to take a moment to express our heartfelt gratitude for your continued support and collaboration throughout the year. Your commitment has played a pivotal role in our shared successes.
+    </p>
+    <p>
+        This festive season is a time for reflection, appreciation, and joy. We are immensely grateful for the trust you have placed in us, and we look forward to building on our partnership in the coming year.
+    </p>
+    <p>
+        May your holidays be filled with warmth, laughter, and the company of loved ones. As we celebrate the spirit of the season, let's cherish the moments that matter most.
+    </p>
+    <p>
+        Thank you for being an essential part of our journey. Wishing you a Merry Christmas and a joyous holiday season.
+    </p>
+    <p>
+        Warm Regards<br/><b>ICT Academy of Kerala<b>
+    </p>
+
+
+<div style="margin-top:25px; display:none;">
+    <a href="https://ictkerala.org/registration" target="_blank" alt="Register Now" title="Register Now" style="background:#FF7755; padding:10px; border-radius:5px; color:white; text-decoration:none; font-weight:bold;">REGISTER NOW</a>
+     <p>
+        Registration ends on <b>2023 ഒക്ടോബർ 15</b>
+    </p>
+</div>
+    
+
+</div>
+<!-- Main Body End -->
+    
+<!-- Side Content -->
+<div style="margin-top:40px; min-width:150px;">
+
+<div style="padding:5px 20px; background:#CCFBFB; font-size:80%; color:gray; display:none;">
+    <p>
+        <b>Information and Communication Technology Academy of Kerala</b> (ICTAK) is a social enterprise created in a Public-Private Partnership model (PPP). The organization is committed to imparting ICT skills to the youths of Kerala and thereby improving their employability opportunities in the industry. ICTAK is the largest skilled workforce supplier in the industry and trains and supplies eligible candidates with world-class amenities. ICTAK has successfully offered placement assistance for more than 2000+ candidates to date.
+    </p>
+</div>
+    <div style="font-size:90%;">
+        <p>
+            
+        </p>
     </div>
-    <!-- Header End -->
+
+</div>
+<!-- Side Content End -->
+<div style="clear:both;"></div>
+</div>
+<!-- Inner Container End -->
+
     
-    <!-- Main Body -->
-    <div id="mainBody">
-    </div>
+<!-- Inner Footer -->
+<div style="background:url('https://drive.google.com/uc?id=1UXP-c839s8tjQeZCr7-T6EKTuHRngN-M') no-repeat left bottom; min-height:80px;">
     
-    <!-- Footer -->
-    <div style="width:300px; margin: 25px auto; font-family:Arial; text-align:center; text-transform:uppercase; font-size:65%; color:gray;">
-        <span style="font-size:125%; font-weight:bold; color:#0099CC">ICT Academy of Kerala</span><br/>G1, Thejaswini, Technopark Campus<br/>Thiruvananthapuram, Kerala, India - 695581
-    </div>
-    <!-- Footer End -->
+<div style="margin-top:50px; text-transform:uppercase; font-size:65%; color:gray; text-align:center; font-family:Arial; font-weight:bold;">
+    A Govt. of India supported, Govt. of Kerala partnered social enterprise.
+</div>
     
-    <br/>
-    <br/>
-    </body>
-    </html>`,
+
+<!-- Inner Footer End -->
+
+<!-- Outer container End -->
+</div>
+
+<!-- Outer Footer -->
+<div style="width:300px; margin: 25px auto; font-family:Arial; text-align:center; text-transform:uppercase; font-size:65%; color:gray;">
+    <span style="font-size:125%; font-weight:bold; color:#0099CC">ICT Academy of Kerala</span><br/>G1, Thejaswini, Technopark Campus<br/>Thiruvananthapuram, Kerala, India - 695581
+</div>
+<!-- Outer Footer End -->
+
+<br/>
+<br/>
+</body>
+</html>`,
     image: ''
   });
   const [preview, setPreview] = useState('');
