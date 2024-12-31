@@ -22,6 +22,6 @@ router.post('/sendEmails', recipientController.sendEmailToGroup);
 
 router.post('/upload-image', templateController.uploadImage);
 router.get('/uploads/:filename', templateController.getImage);
-router.post('/add-template',templateController.createTemplate)
+router.post('/addTemplate',templateController.createTemplate)
 // router.post('/sendGroup', recipientController.sendGroupEmails)
 module.exports=router

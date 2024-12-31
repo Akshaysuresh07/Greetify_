@@ -17,7 +17,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Create a new template
-exports.createTemplate = [   upload.single('image'), async (req, res) => {
+exports.createTemplateimg = [   upload.single('image'), async (req, res) => {
         try {
             const { name, subject, content, category } = req.body;
             console.log(req.body);
@@ -45,6 +45,27 @@ exports.createTemplate = [   upload.single('image'), async (req, res) => {
             res.status(400).json({ message: error.message });
         }
     }]
+    exports.createTemplate=async(req,res)=>{
+        try{
+            const {name,subject,content,category}=req.body
+            const existingTemplate=await Template.findOne({name:name})
+            if(existingTemplate){
+                return res.status(400).json({message:'Template already exists'})
+            }
+            const template=new Template({
+                name:name,
+                subject:subject,
+                content:content,
+                category:category 
+                
+            })
+            const newTemplate=await template.save()
+            res.status(201).json({ code: 201, message: 'Template created', data: newTemplate });
+        }
+        catch(error){
+            res.status(400).json({message:error.message})
+        }
+    }
 
 
 
