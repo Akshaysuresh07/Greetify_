@@ -124,9 +124,9 @@ const Email = () => {
                     <a
               href={sampleCsvUrl}
               download="sample.csv"
-              className="text-blue-500 hover:underline mt-2 inline-block"
+              className="text-violet-500 hover:underline mt-2 inline-block"
             >
-              Download Sample CSV
+              Template
             </a>
 
         </div>
