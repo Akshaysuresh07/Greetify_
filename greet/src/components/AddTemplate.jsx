@@ -99,7 +99,7 @@ Happy New Year to you and your loved ones!
       
     if (result.data && result.data.filename) {
       // Set uploaded image as background image
-      const imgUrl = ` http://localhost:4000/api/uploads/${result.data.filename}`;
+      const imgUrl = ` https://greetify-ryxz.onrender.com/api/uploads/${result.data.filename}`;
       setTemplateData((prev) => ({
         ...prev,
         content: prev.content.replace('{imgUrl}', imgUrl),
