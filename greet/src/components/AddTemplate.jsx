@@ -27,13 +27,7 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
     Dear {{name}},
     <br/>
     <div id="mainBody">
-Dear {{name}},
 
-As we step into the New Year, we wish you joy, prosperity, and success in all your endeavors.
-
-May the year ahead be filled with hope, happiness, and new beginnings.
-
-Happy New Year to you and your loved ones!
 
     </div>
 
