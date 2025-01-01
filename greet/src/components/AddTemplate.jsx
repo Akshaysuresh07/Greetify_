@@ -23,8 +23,10 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
     <!-- Header End -->
     
     <!-- Main Body -->
-    <div id="maindiv" style="padding:0 20px 20px 20px;">
+    <div style="margin-top:600px; min-width:350px; padding:0 20px; font-size:13pt; ">
+
     <div id="mainBody">
+
     </div>
 
     </div>
@@ -90,7 +92,7 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
       
     if (result.data && result.data.filename) {
       // Set uploaded image as background image
-      const imgUrl = ` https://greetify-ryxz.onrender.com/api/uploads/${result.data.filename}`;
+      const imgUrl = ` http://localhost:4000/api/uploads/${result.data.filename}`;
       setTemplateData((prev) => ({
         ...prev,
         content: prev.content.replace('{imgUrl}', imgUrl),
