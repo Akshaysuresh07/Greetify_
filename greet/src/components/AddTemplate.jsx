@@ -23,7 +23,9 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
     <!-- Header End -->
     
     <!-- Main Body -->
+    <div id="maindiv" style="padding:0 20px 20px 20px;">
     <div id="mainBody">
+    </div>
 
     </div>
     
@@ -39,7 +41,6 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
     </html>`,
     image: ''
   });
-  
   const [preview, setPreview] = useState('');
   const [mainBodyContent, setMainBodyContent] = useState('');
   console.log('mainbody----', mainBodyContent);
