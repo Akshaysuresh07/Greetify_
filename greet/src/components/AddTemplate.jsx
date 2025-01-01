@@ -24,7 +24,8 @@ const AddTemplate = ({ onTemplateAdded, onClose }) => {
     
     <!-- Main Body -->
     <div style="margin-top:600px; min-width:350px; padding:0 20px; font-size:13pt; ">
-
+    Dear {{name}},
+    <br/>
     <div id="mainBody">
 Dear {{name}},
 
