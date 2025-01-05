@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import grapesjs from 'grapesjs';
 import 'grapesjs/dist/css/grapes.min.css';
 import pluginNewsletter from 'grapesjs-preset-newsletter';
@@ -11,12 +11,14 @@ const GrapesJSEditor = ({ content, onSave }) => {
     const grapesEditor = grapesjs.init({
       container: '#editor',
       height: '100%',
-      width: '100%',
+      width: 'auto',
       storageManager: { type: 'none' },
       plugins: [pluginNewsletter],
       pluginsOpts: { 'gjs-preset-newsletter': {} },
+
       removable: true,
       draggable: true,
+      
 
       panels: {
         defaults: [
@@ -50,32 +52,40 @@ const GrapesJSEditor = ({ content, onSave }) => {
     return () => {
       grapesEditor.destroy();
     };
-  }, [content, onSave]);
+  }, [content]);
 
   //save edited content 
-  const handleSave = () => {
-    // Get HTML content to formData
-    const htmlContent = editor.getHtml();
-    // Get CSS content  
-    const cssContent = editor.getCss();
+  // const handleSave = () => {
+  //   // Get HTML content to formData
+  //   const htmlContent = editor.getHtml();
+  //   // Get CSS content  
+  //   const cssContent = editor.getCss();
 
-    // Inline CSS
-    const combinedContent = juice.inlineContent(htmlContent, cssContent);
+  //   // Inline CSS
+  //   const combinedContent = juice.inlineContent(htmlContent, cssContent);
 
-    console.log(combinedContent);
+  //   console.log(combinedContent);
 
-    // Send the data 
-    onSave(combinedContent);
-    alert('Template saved successfully');
-  };
-
+  //   // Send the data 
+  //   onSave(combinedContent);
+  //   alert('Template saved successfully');
+  // };
+  const handleSave = useCallback(() => {
+    if (editor) {
+      const htmlContent = editor.getHtml();
+      const cssContent = editor.getCss();
+      const combinedContent = juice.inlineContent(htmlContent, cssContent);
+      console.log(combinedContent);
+      onSave(combinedContent);
+    }
+  }, [editor, onSave]);
   return (
     <div className="flex w-full mt-5 flex-col h-full">
       {/* <header className="text-center p-4 bg-gray-800 text-white">
       <h1>Email Template Editor</h1>
     </header> */}
-      <div className="flex-1 overflow-y-visible">
-        <div id="editor" className="h-full w-2/6 border border-gray-300"></div>
+      <div className="flex-1 overflow-x-auto  overflow-y-auto">
+        <div id="editor" className="h-full w-auto  border border-gray-300"></div>
       </div>
       <div className="text-center p-4 ">
         <button
@@ -89,4 +99,4 @@ const GrapesJSEditor = ({ content, onSave }) => {
   );
 };
 
-export default GrapesJSEditor;
+export default React.memo(GrapesJSEditor);

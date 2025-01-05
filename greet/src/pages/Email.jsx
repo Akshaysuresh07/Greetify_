@@ -2,43 +2,54 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Papa from 'papaparse';
 import GrapesJSEditor from '../components/GrapeJSEditor';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Sidebar from '../components/Sidebar';
 import Header from '../components/Header';
 
 const Email = () => {
+  const navigate=useNavigate()
   const location=useLocation();
   const initialContent = location.state && location.state.content ? location.state.content : '';
-  const [formData, setFormData] = useState({
-    group: '',
-    content:  initialContent,
-    emails: [''],
-    subject: '',
-    names: [], // Add names to the state
-    // templateId:location.state.id
+  // const [formData, setFormData] = useState({
+  //   group: '',
+  //   content:  initialContent,
+  //   emails: [''],
+  //   subject: '',
+  //   names: [], // Add names to the state
+  //   // templateId:location.state.id
     
-  });
+  // });
+  const [emails, setEmails] = useState('');
+  const [subject, setSubject] = useState('');
+  const [content, setContent] = useState(initialContent);
+  const [names, setNames] = useState([]);
+  console.log(`Emails: ${emails}, Subject: ${subject}, Content: ${content}, Names: ${names}`);
+  
   const [message, setMessage] = useState('');
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    console.log(" formData:", { ...formData, [name]: value });
+    if (name === 'emails') {
+      setEmails(value);
+    } else if (name === 'subject') {
+      setSubject(value);
+    }
     
   };
 
   const handleEditorChange = (html) => {
-    setFormData({ ...formData, content: html });
-    console.log("Updated formData:", { ...formData, content: html });
+    setContent(html);
+    console.log("Updated content:", html);
   };
-  const handleFileUpload = (event) => {
+const handleFileUpload = (event) => {
     const file = event.target.files[0];
     Papa.parse(file, {
       header: true,
       complete: (results) => {
         const emails = results.data.map(row => row.email).filter(email => email);
         const names = results.data.map(row => row.name).filter(name => name);
-        setFormData({ ...formData, emails: emails.join(','), names });
+        setEmails(emails.join(','));
+        setNames(names);
       },
       error: (error) => {
         console.error('Error parsing CSV file:', error);
@@ -56,21 +67,21 @@ const Email = () => {
   const handleSubmit = async () => {
     
     try {
-      // POST request with body data
-      const response = await axios.post('/api/sendemails', formData, {
+      const formData = { emails, subject, content, names };
+      const response = await axios.post('http://localhost:4000/api/sendemails', formData, {
           headers: {
               'Content-Type': 'application/json', 
           },
       });
       if(response){
         alert("Email Sent Successfully");
-        setFormData({
-          group: '',
-          content: '',
-          emails: '',
-          subject: '',
-          names: []
-        })
+        setEmails('');
+        setSubject('');
+        setContent('<p>Edit your template here...</p>');
+        setNames([]);
+        setTimeout(()=>{
+          navigate('/')
+        },2000)
       }
 
       console.log(response.data); 
@@ -83,9 +94,9 @@ const Email = () => {
   return (
     <>
      {/* <Header/> */}
-     {/* <Sidebar/> */}
-    <div className=" flex w-full min-h-screen bg-slate-100 ">
      
+    <div className=" flex w-full min-h-screen bg-slate-100 ">
+    <Sidebar/>
 
     <div className="flex-1 w-full sm:w-2/3 p-4 sm:p-6 lg:p-10 h-auto bg-gray-50 m-4 sm:m-6 lg:m-10 shadow-md rounded-md">      <h1 className="text-2xl font-bold mb-6">Draft Email</h1>
       
@@ -97,7 +108,7 @@ const Email = () => {
           <input
             type="text"
             name="emails"
-            value={formData.emails}
+            value={emails}
             onChange={handleChange}
             placeholder="Emails"
             className="w-full  p-2 mt-2 border border-gray-300 rounded"
@@ -107,7 +118,7 @@ const Email = () => {
             type="text"
             name="subject"
             
-            value={formData.subject}
+            value={subject}
             onChange={handleChange}
             placeholder="Subject"
             className="w-full p-2 mt-2 border border-gray-300 rounded"
@@ -133,7 +144,7 @@ const Email = () => {
           <div className="mb-4">
           <label className="block text-gray-700">Body:</label>
           <div className="h-96 ">
-            <GrapesJSEditor content={formData.content} onSave={handleEditorChange} />
+            <GrapesJSEditor content={content} onChange={(e) => handleEditorChange(e.target.value)} onSave={handleEditorChange} />
           </div>
         </div>
           </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 
-const RecipientList = () => {
+const RecipientList = ({recipients}) => {
+
     
   return (
     <div className="overflow-x-auto">
@@ -15,12 +16,21 @@ const RecipientList = () => {
         </thead>
         <tbody>
          
-            <tr >
-              <td className="py-2 px-4 border-b">1</td>
-              <td className="py-2 px-4 border-b">Namwe</td>
-              <td className="py-2 px-4 border-b">Tets@gamil.com</td>
+            {recipients && recipients.length > 0 ? (
+            recipients.map((recipient, index) => (
+              <tr key={index}>
+                <td className="py-2 px-4 border-b text-center">{index + 1}</td>
+                <td className="py-2 px-4 border-b text-center">{recipient.email}</td>
+                <td className="py-2 px-4 border-b text-center">{recipient.name}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan="3" className="py-2 px-4 border-b text-center">
+                No recipients available
+              </td>
             </tr>
-        
+          )}
         </tbody>
       </table>
     </div>

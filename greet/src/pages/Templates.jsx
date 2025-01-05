@@ -66,12 +66,14 @@ function Templates() {
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
-    const filtered = templates.filter(template => 
-      template.name.toLowerCase().includes(query) || 
-      template.subject.toLowerCase().includes(query)
+    const filtered = templates.filter(template =>
+      template.name.toLowerCase().includes(query) 
     );
     setFilteredTemplates(filtered);
   };
+  console.log(filteredTemplates);
+  
+
 
   return (
     <Layout>

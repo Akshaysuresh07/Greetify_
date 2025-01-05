@@ -1,36 +1,65 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RecipientList from '../components/RecipientList';
 import Header from '../components/Header';
+import { AddRecipientsApi, fetchRecipients } from '../Api/Recipients';
+import Papa from 'papaparse';
 
 function Recipients() {
   const [isAddRecipientModalOpen, setIsAddRecipientModalOpen] = useState(false);
   const [recipients, setRecipients] = useState([]);
+  const [parsedRecipients, setParsedRecipients] = useState([]);
 
   const handleFileUpload = (event) => {
     const file = event.target.files[0];
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      const content = e.target.result;
-      const rows = content.split('\n');
-      const newRecipients = rows.map(row => row.trim()).filter(row => row);
-      setRecipients([...recipients, ...newRecipients]);
-      console.log("Added Recipients:", newRecipients);
-      setIsAddRecipientModalOpen(false);
-    };
-    reader.readAsText(file);
-  };
+    if (file) {
+      Papa.parse(file, {
+        header: true,
+        complete: (results) => {
+          const parsedRecipients = results.data.map(row => ({
+            email: row.email,
+            name: row.name
+          })).filter(recipient => recipient.email && recipient.name);
+          (parsedRecipients);
+          console.log("Parsed Recipients:", parsedRecipients);
+          
+        },
+        error: (error) => {
+          console.error('Error parsing CSV file:', error);
+        }
+      });
+    }
+  }
+    
+  
+ 
 
   const handleAddRecipient = (email) => {
-    setRecipients([...recipients, email]);
+    const result=AddRecipientsApi(email);
+    setRecipients([...recipients, result]);
+    
     
     setIsAddRecipientModalOpen(false);
     console.log("Added Recipient:", email);
     
   };
+  const getRecipients = async () => {
+    try {
+      const response =await fetchRecipients();
+      setRecipients(response);
+    } catch (error) {
+      console.log("Error fetching recipients:", error);
+  
+      
+    }
+  }
+console.log("Recipients:",recipients);
 
+useEffect(()=>{
+  getRecipients();
+},[])
   return (
     <>
-    <Header/>
+    {/* <Header/> */}
 
 <div className="w-full min-h-screen bg-slate-100 p-6">
       <div className='flex justify-between '>

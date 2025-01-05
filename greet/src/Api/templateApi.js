@@ -17,7 +17,7 @@ export const fetchTemplates = async (page, limit) => {
 
 export const saveTemplate = async (id, content) => {
   try {
-    const response = await axios.patch(`http://localhost:4000/api/updateTemplate/${id}`, { content });
+    const response = await axios.patch(`${API_BASE_URL}/updateTemplate/${id}`, { content });
     return response.data;
   } catch (error) {
     throw new Error(error.response ? error.response.data.message : error.message);

@@ -11,10 +11,10 @@ const path = require('path');
 exports.recipientUpload = async (req, res) => {
     try {
         const { name, email, group } = req.body;
-        const existingRecipient = await Recipient.findone({ email: email });
-        if (existingRecipient) {
-            return res.status(400).json({ message: 'Recipient already exists' });
-        }
+        // const existingRecipient = await Recipient.findone({ email: email });
+        // if (existingRecipient) {
+        //     return res.status(400).json({ message: 'Recipient already exists' });
+        // }
         const recipient = new Recipient({
             name: name,
             email: email,
@@ -199,7 +199,7 @@ exports.sendEmailToGroup = async (req, res) => {
         }
 
         
-
+        let name = []
         let recipients = [];
         let imagePath=''
         let emailContent =content
@@ -225,7 +225,9 @@ exports.sendEmailToGroup = async (req, res) => {
             }
         } else if (Array.isArray(emails) && emails.length > 0) {
             // Use the provided emails array
-            recipients = emails.map(email => ({ email ,names}));
+            recipients = emails.map(email => ({ email}));
+            name=names.map(name=>({name}))
+            
         } else if (typeof emails === 'string') {
             // Single email provided
             recipients = [{ email: emails }];
@@ -248,7 +250,7 @@ exports.sendEmailToGroup = async (req, res) => {
                 from: process.env.EMAIL_USER,
                 to: recipient.email,
                 subject: subject,
-                html: emailContent.replace('{{name}}', recipient.names ||names, 'Valued Customer'),
+                html: emailContent.replace('{{name}}', name || 'Valued Customer'),
                 // attachments: [{
                 //     filename: 'templateImage.png',
                 //     path: path.resolve(__dirname, `../${imagePath}`),
