@@ -68,7 +68,7 @@ const handleFileUpload = (event) => {
     
     try {
       const formData = { emails, subject, content, names };
-      const response = await axios.post('http://localhost:4000/api/sendemails', formData, {
+      const response = await axios.post('/api/sendemails', formData, {
           headers: {
               'Content-Type': 'application/json', 
           },
